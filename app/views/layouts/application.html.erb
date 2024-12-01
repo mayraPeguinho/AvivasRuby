@@ -24,11 +24,12 @@
   </head>
 
   <body class="h-screen w-screen">
-    <nav class="w-full h-auto bg-pink-200 flex justify-between">
+    <nav class="w-full h-auto bg-customPink flex justify-between">
       <div class="flex ">
         <p class='text-darkPurple py-5 px-2'>Productos</p>
         <% if user_signed_in? %>
-        <% end %>
+        <%= link_to 'Usuarios', users_path, class: 'text-darkPurple py-5 px-2' %>
+      <% end %>
       </div>
       <% if not user_signed_in? %>
         <%= button_to 'Acceder', new_user_session_path, method: :get, class: 'text-darkPurple py-5 px-2' %>

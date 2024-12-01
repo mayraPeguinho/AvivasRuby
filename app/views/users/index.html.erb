@@ -1,0 +1,39 @@
+<div class="w-full p-5">
+
+
+  <% content_for :title, "Usuarios" %>
+
+  <div class="flex justify-between">
+    <h1 class="font-bold text-3xl text-darkPurple">Usuarios</h1>
+    <%= link_to "Nuevo Usuario", new_user_registration_path, class: "bg-lilac text-darkPurple p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
+  </div>
+
+  <p class="text-darkLilac mb-6">Aquí podrá ver la información sobre los usuarios del sistema.</p>
+
+  <div id="users" class="min-w-full">
+    <table class="min-w-full table-auto border-collapse">
+      <thead class="bg-lilac text-white">
+        <tr>
+          <th class="px-4 py-2 border">Nombre</th>
+          <th class="px-4 py-2 border">Correo Electrónico</th>
+          <th class="px-4 py-2 border">Rol</th>
+          <th class="px-4 py-2 border">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr class="border-b hover:bg-gray-100">
+            <td class="px-4 py-2"><%= user.alias %></td>
+            <td class="px-4 py-2"><%= user.email %></td>
+            <td class="px-4 py-2"><%= user.role.name %></td>
+            <td class="px-4 py-2 text-center">
+              <%= link_to 'Ver', user_path(user), class: "text-blue-500 hover:text-blue-700" %> |
+              <%= link_to 'Editar', edit_user_path(user), class: "text-yellow-500 hover:text-yellow-700" %> |
+              <%= link_to 'Eliminar', user_path(user), method: :delete, data: { confirm: "¿Estás seguro?" }, class: "text-red-500 hover:text-red-700" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
