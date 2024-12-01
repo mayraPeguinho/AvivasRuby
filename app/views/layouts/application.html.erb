@@ -23,12 +23,31 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-  <h1 class="text-3xl font-bold underline">
-    Hello world!
-</h1>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="h-screen w-screen">
+  <nav class="w-full h-auto bg-pink-200 flex justify-between">
+    <div class="flex ">
+      <p class='text-darkPurple py-5 px-2'>Productos</p>
+      <% if user_signed_in? %>
+        <%= link_to 'Usuarios', users_path, class: 'text-darkPurple py-5 px-2' %>
+      <% end %>
+    </div>
+    <% if not user_signed_in? %>
+      <%= button_to 'Acceder', new_user_session_path, method: :get, class: 'text-darkPurple py-5 px-2' %>
+    <% end %>
+    <% if user_signed_in? %>
+    <%= link_to 'Cerrar sesión', destroy_user_session_path, method: :delete %>
+
+    <% end %>
+  </nav>
+    <main class="w-full h-full bg-slate-200 flex flex-col justify-center items-center">
+   
       <%= yield %>
+      
     </main>
+    <footer class="bg-gray-800 text-white py-4 mt-8">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2024 Avivas. Todos los derechos reservados.</p>
+      </div>
+      </footer>
   </body>
 </html>

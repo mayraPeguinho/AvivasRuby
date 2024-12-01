@@ -7,3 +7,20 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+admin_role = Role.create(name: 'Admin')
+
+user=User.create(
+  email: 'admin@gmail.com',
+  password: 'admin123',
+  alias: 'admin_alias',
+  tel: '123456789',
+  entry_date: Date.today,
+  role: admin_role
+)
+
+if user.persisted?
+    puts "Usuario creado correctamente."
+  else
+    puts "Error al crear el usuario: #{user.errors.full_messages}"
+  end
