@@ -30,14 +30,19 @@
     </div>
 
     <div class="my-5">
-    <%= form.label :role_id %>
-    <%= form.collection_select :role_id,  Role.all, :id, :name, { prompt: "Select Role" }, required: true, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+      <%= form.label :role_id %>
+      <%= form.collection_select :role_id, Role.all, :id, :name, { prompt: "Select Role" }, 
+        { 
+          required: true, 
+          class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", 
+          disabled: @user == current_user 
+        } %>
+    </div>
   
   
     <div class="my-5">
       <%= form.label :entry_date %>
-      <%= form.datetime_field :entry_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      <%= form.date_field :entry_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
     </div>
   
     <div class="inline">

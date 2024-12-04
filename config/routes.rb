@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
   devise_for :users, controllers: {
-    registrations: 'users/registrations',sessions: 'users/sessions'
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
   }
 
   get "home/index"
   root "home#index"
-  resources :users, only: [:index, :edit, :update]
+
+  resources :users, only: [:index, :edit, :update] do
+    member do
+      patch :activate
+      patch :deactivate
+    end
+  end
 end
