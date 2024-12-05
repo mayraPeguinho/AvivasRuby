@@ -14,49 +14,41 @@
   </div>
 
   <div class="field">
-    <%= f.label :role_id %>
-    <%= f.collection_select :role_id,  Role.all, :id, :name, { prompt: "Seleccione un Rol" }, required: true, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+  <%= f.label :role_id %>
+  <%= f.collection_select :role_id, Role.all, :id, :name, { prompt: "Seleccione un Rol" }, { required: true, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", disabled: true } %>
+</div>
+
 
   <div class="field">
     <%= f.label :entry_date %>
-    <%= f.datetime_field :entry_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= f.date_field :entry_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"%>
   </div>
-
-  <div class="field">
-  <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-  <%= f.password_field :current_password, autocomplete: "current-password" %>
-</div>
-
   <div class="field">
     <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
+    <%= f.password_field :password, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"%>
     <% if @minimum_password_length %>
-      <br />
       <em><%= @minimum_password_length %> characters minimum</em>
     <% end %>
   </div>
-
   <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
+    <br />
 
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"%>
+  </div>
   <div class="field">
     <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
-    <%= f.password_field :current_password, autocomplete: "current-password" %>
+    <%= f.password_field :current_password,  class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"%>
   </div>
 
   <div class="actions">
     <%= f.submit "update" %>
   </div>
 <% end %>
-
-<%= button_to "Delete User", registration_path(resource_name), data: { confirm: "Are you sure?", turbo_confirm: "Are you sure?" }, method: :delete %>
 
 <%= link_to "Back", :back %>
