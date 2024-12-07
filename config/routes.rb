@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :colors
+  resources :product_variants, only: [:index] 
   devise_for :users, controllers: {
     registrations: "users/registrations",
     sessions: "users/sessions"
