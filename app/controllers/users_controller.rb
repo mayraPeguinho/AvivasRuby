@@ -2,14 +2,14 @@ class UsersController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
   before_action :set_user, only: %i[ edit update activate deactivate]
-  
+
     def index
       @users = User.all
     end
 
     def edit
     end
-  
+
     def update
       respond_to do |format|
         if @user.update(user_params)
@@ -24,17 +24,17 @@ class UsersController < ApplicationController
 
     def deactivate
       if @user.update(active: false, password: SecureRandom.hex(10))
-        redirect_to users_path, notice: 'Usuario desactivado correctamente y contraseña reseteada.'
+        redirect_to users_path, notice: "Usuario desactivado correctamente y contraseña reseteada."
       else
-        redirect_to users_path, alert: 'No se pudo desactivar el usuario.'
+        redirect_to users_path, alert: "No se pudo desactivar el usuario."
       end
     end
 
     def activate
       if @user.update(active: true, password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
-        redirect_to users_path, notice: 'Usuario activado correctamente.'
+        redirect_to users_path, notice: "Usuario activado correctamente."
       else
-        flash[:alert] = 'No se pudo activar el usuario.'
+        flash[:alert] = "No se pudo activar el usuario."
         render :edit # O la vista que uses para activar
       end
     end

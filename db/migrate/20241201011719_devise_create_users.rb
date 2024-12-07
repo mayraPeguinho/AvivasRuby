@@ -35,7 +35,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[8.0]
       t.string :alias
       t.string :tel
       t.date :entry_date
-      t.references :role, null: false, foreign_key: true 
+      t.references :role, null: false, foreign_key: true
 
       t.timestamps null: false
     end

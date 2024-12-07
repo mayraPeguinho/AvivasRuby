@@ -23,6 +23,6 @@ user=User.create(
 
 if user.persisted?
     puts "Usuario creado correctamente."
-  else
+else
     puts "Error al crear el usuario: #{user.errors.full_messages}"
-  end
+end
