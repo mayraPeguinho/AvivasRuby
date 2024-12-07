@@ -1,3 +1,4 @@
 class Size < ApplicationRecord
-    validates :name, presence: true, uniqueness: true
+    has_many :products
+    validates :name, presence: true, uniqueness: true  
 end
