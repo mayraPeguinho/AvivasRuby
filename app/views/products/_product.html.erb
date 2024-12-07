@@ -4,6 +4,13 @@
     <%= product.name %>
   </p>
 
+  <p>
+  <strong>Images:</strong>
+  <% product.images.each do |image| %>
+    <%= image_tag image, class: "w-32 h-32 object-cover" %>
+  <% end %>
+</p>
+
   <p class="my-5">
     <strong class="block font-medium mb-1">Description:</strong>
     <%= product.description %>

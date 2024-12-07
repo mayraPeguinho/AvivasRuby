@@ -5,17 +5,34 @@
 
   <% content_for :title, "Products" %>
 
-  <div class="flex justify-between items-center">
-    <h1 class="font-bold text-4xl">Products</h1>
-    <%= link_to "New product", new_product_path, class: "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium" %>
+  <div class="flex justify-between">
+    <h1 class="font-bold text-3xl text-darkPurple">Products</h1>
+    <%= link_to "New product", new_product_path, class: "bg-lilac text-darkPurple p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
   </div>
 
-  <div id="products" class="min-w-full">
-    <% @products.each do |product| %>
-      <%= render product %>
-      <p>
-        <%= link_to "Show this product", product, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
-      </p>
-    <% end %>
+  <div id="users" class="min-w-full">
+    <table class="min-w-full table-auto border-collapse">
+      <thead class="bg-lilac text-white">
+        <tr>
+          <th class="px-4 py-2 border">Name</th>
+          <th class="px-4 py-2 border">Unit Price</th>
+          <th class="px-4 py-2 border">Available Stock</th>
+          <th class="px-4 py-2 border">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @products.each do |product| %>
+          <tr class="border-b hover:bg-gray-100">
+            <td class="px-4 py-2"><%= product.name %></td>
+            <td class="px-4 py-2"><%= product.unit_price %></td>
+            <td class="px-4 py-2"><%= product.available_stock %></td>
+            <td class="px-4 py-2 text-center flex">
+              <%= link_to 'View/Edit', edit_product_path(product.id), class: "text-yellow-500 hover:text-yellow-700" %>              
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
+</div>
 </div>
