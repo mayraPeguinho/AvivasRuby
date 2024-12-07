@@ -34,7 +34,7 @@
   <%= link_to "New Category", new_category_path, class: "bg-lilac text-darkPurple p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
 </div>
 
-<div id="colors" class="min-w-full">
+<div id="categories" class="min-w-full">
   <table class="min-w-full table-auto border-collapse">
     <thead class="bg-lilac text-white">
       <tr>
@@ -56,5 +56,35 @@
   </table>
 </div>
 </div>
+
+<div class="w-1/3 p-5">
+<div class="flex justify-between">
+  <h1 class="font-bold text-3xl text-darkPurple">Sizes</h1>
+  <%= link_to "New Size", new_size_path, class: "bg-lilac text-darkPurple p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
+</div>
+
+<div id="sizes" class="min-w-full">
+  <table class="min-w-full table-auto border-collapse">
+    <thead class="bg-lilac text-white">
+      <tr>
+        <th class="px-4 py-2 border">Name</th>
+        <th class="px-4 py-2 border">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @sizes.each do |size| %>
+        <tr class="border-b hover:bg-gray-100">
+          <td class="px-4 py-2"><%= size.name %></td>
+          <td class="px-4 py-2 text-center flex">
+            <%= link_to 'Edit', edit_size_path(size.id), class: "text-yellow-500 hover:text-yellow-700" %>
+            <%= link_to 'Delete', edit_size_path(size.id), class: "text-red-500 hover:text-red-700" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+</div>
+
 </div>
 

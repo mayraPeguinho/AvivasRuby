@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :sizes
   resources :categories
   resources :colors
   resources :product_variants, only: [:index] 
