@@ -52,6 +52,20 @@
   </div>
 
   <div class="field">
+  <strong>Current Images:</strong>
+  <ul>
+    <% product.images.each do |image| %>
+      <li class="flex items-center gap-4">
+        <%= image_tag image, class: "w-32 h-32 object-cover" %>
+        <label>
+          <%= check_box_tag "product[remove_images][]", image.blob.id %> Remove
+        </label>
+      </li>
+    <% end %>
+  </ul>
+</div>
+
+  <div class="field">
     <%= form.label :images %>
     <%= form.file_field :images, multiple: true %> 
   </div>

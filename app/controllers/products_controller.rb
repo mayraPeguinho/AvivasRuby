@@ -36,8 +36,20 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
+    
+  end
+
+  def update
+    @product = Product.find(params[:id])
+  
+    if params[:product][:remove_images].present?
+      params[:product][:remove_images].each do |image_id|
+        @product.images.find(image_id).purge
+      end
+    end
+    
     respond_to do |format|
-      if @product.update(product_params)
+      if @product.update(product_params.except(:remove_images))
         format.html { redirect_to @product, notice: "Product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
       else
@@ -46,6 +58,7 @@ class ProductsController < ApplicationController
       end
     end
   end
+  
 
   # DELETE /products/1 or /products/1.json
   def destroy
@@ -68,7 +81,8 @@ class ProductsController < ApplicationController
     def product_params
       params.require(:product).permit(
         :name, :description, :inventory_entry_date, :delete_date, :is_deleted,
-        :available_stock, :unit_price, :size_id, :color_id, :category_id, images: []
+        :available_stock, :unit_price, :size_id, :color_id, :category_id,
+        images: [], remove_images: []
       )
     end
 end
