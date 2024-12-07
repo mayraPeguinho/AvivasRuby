@@ -4,7 +4,7 @@ class ProductVariantsController < ApplicationController
     def index
     #   @sizes = Size.all
       @colors = Color.all
-    #   @categories = Category.all
+      @categories = Category.all
     end
   end
   
