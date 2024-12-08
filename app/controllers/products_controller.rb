@@ -21,8 +21,10 @@ class ProductsController < ApplicationController
 
   # POST /products or /products.json
   def create
-    @product = Product.new(product_params)
-
+    params[:product][:images] = params[:product][:new_images] if params[:product][:new_images].present?
+  
+    @product = Product.new(product_params.except(:new_images))
+  
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product, notice: "Product was successfully created." }
@@ -36,17 +38,13 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
-    puts "ACA ESTOOOOOY"
-    Rails.logger.debug "Params: #{params.inspect}"
     respond_to do |format|
       product_update_params = product_params.except(:new_images)
       if @product.update(product_update_params)
-        puts "llegue ACAAAAAAAAAAAAAA"
         save_images if params[:product][:new_images].present?
         format.html { redirect_to @product, notice: "The product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
       else
-        puts "errorrrrrrrr"
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
@@ -65,12 +63,11 @@ class ProductsController < ApplicationController
 
   private
   def save_images
-    params[:product][:new_images].each do |image|
-      next if image.blank?
-      @product.images.attach(image)
-    end
+  params[:product][:new_images].each do |image|
+    next if image.blank?
+    @product.images.attach(image)
   end
-  
+end
 
     # Use callbacks to share common setup or constraints between actions.
   def set_product
