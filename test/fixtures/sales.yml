@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  total_sale: 9.99
+  client: MyString
+  deleted_at: 2024-12-08
+  realization_datetime: 2024-12-08 23:50:24
+
+two:
+  user: two
+  total_sale: 9.99
+  client: MyString
+  deleted_at: 2024-12-08
+  realization_datetime: 2024-12-08 23:50:24
