@@ -1,5 +1,5 @@
 class Product < ApplicationRecord
-  has_many_attached :images, dependent: :destroy
+  has_many_attached :images
   belongs_to :size, optional: true
   belongs_to :color, optional: true
   belongs_to :category
@@ -9,7 +9,6 @@ class Product < ApplicationRecord
   validates :unit_price, presence: true
   validates :available_stock, presence: true
   validates :inventory_entry_date, presence: true
-
 
   validate :must_have_at_least_one_image, on: [:create, :update]
 

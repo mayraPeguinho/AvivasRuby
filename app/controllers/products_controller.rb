@@ -3,8 +3,9 @@ class ProductsController < ApplicationController
 
   # GET /products or /products.json
   def index
-    @products = Product.all
+    @products = Product.where(deleted_at: nil)
   end
+  
 
   # GET /products/1 or /products/1.json
   def show
@@ -53,15 +54,24 @@ class ProductsController < ApplicationController
 
   # DELETE /products/1 or /products/1.json
   def destroy
-    @product.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to products_path, status: :see_other, notice: "Product was successfully destroyed." }
-      format.json { head :no_content }
+    @product = Product.find(params[:id])
+  
+    if @product.update(deleted_at: Time.current, available_stock: 0)
+      respond_to do |format|
+        format.html { redirect_to products_path, status: :see_other, notice: "Product was successfully destroyed." }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to products_path, status: :unprocessable_entity, alert: "Error updating the product." }
+        format.json { render json: @product.errors, status: :unprocessable_entity }
+      end
     end
   end
 
   private
+
+
   def save_images
   params[:product][:new_images].each do |image|
     next if image.blank?
