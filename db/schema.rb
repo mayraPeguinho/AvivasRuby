@@ -40,27 +40,27 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_07_195051) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "colors", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.date "inventory_entry_date"
+    t.string "name", null: false
+    t.string "description", null: false
+    t.date "inventory_entry_date", null: false
     t.date "delete_date"
-    t.boolean "is_deleted"
-    t.integer "available_stock"
-    t.decimal "unit_price"
-    t.integer "size_id", null: false
-    t.integer "color_id", null: false
+    t.boolean "is_deleted", default: false, null: false
+    t.integer "available_stock", null: false
+    t.decimal "unit_price", null: false
+    t.integer "size_id"
+    t.integer "color_id"
     t.integer "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -76,7 +76,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_07_195051) do
   end
 
   create_table "sizes", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

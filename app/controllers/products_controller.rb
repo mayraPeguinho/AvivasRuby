@@ -36,29 +36,22 @@ class ProductsController < ApplicationController
 
   # PATCH/PUT /products/1 or /products/1.json
   def update
-    
-  end
-
-  def update
-    @product = Product.find(params[:id])
-  
-    if params[:product][:remove_images].present?
-      params[:product][:remove_images].each do |image_id|
-        @product.images.find(image_id).purge
-      end
-    end
-    
+    puts "ACA ESTOOOOOY"
+    Rails.logger.debug "Params: #{params.inspect}"
     respond_to do |format|
-      if @product.update(product_params.except(:remove_images))
-        format.html { redirect_to @product, notice: "Product was successfully updated." }
+      product_update_params = product_params.except(:new_images)
+      if @product.update(product_update_params)
+        puts "llegue ACAAAAAAAAAAAAAA"
+        save_images if params[:product][:new_images].present?
+        format.html { redirect_to @product, notice: "The product was successfully updated." }
         format.json { render :show, status: :ok, location: @product }
       else
+        puts "errorrrrrrrr"
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @product.errors, status: :unprocessable_entity }
       end
     end
   end
-  
 
   # DELETE /products/1 or /products/1.json
   def destroy
@@ -71,18 +64,23 @@ class ProductsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_product
-      @product = Product.find(params.expect(:id))
+  def save_images
+    params[:product][:new_images].each do |image|
+      next if image.blank?
+      @product.images.attach(image)
     end
+  end
+  
 
-    # Only allow a list of trusted parameters through.
+    # Use callbacks to share common setup or constraints between actions.
+  def set_product
+    @product = Product.find(params.expect(:id))
+  end
+
+  # Only allow a list of trusted parameters through.
     
-    def product_params
-      params.require(:product).permit(
-        :name, :description, :inventory_entry_date, :delete_date, :is_deleted,
-        :available_stock, :unit_price, :size_id, :color_id, :category_id,
-        images: [], remove_images: []
-      )
-    end
+  def product_params
+    params.require(:product).permit(:name, :description, :inventory_entry_date, :available_stock, :unit_price, :size_id, :color_id, :category_id, images: [], new_images: [])
+  end
+  
 end

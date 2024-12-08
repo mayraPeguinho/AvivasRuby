@@ -51,6 +51,7 @@
     <%= form.collection_select :category_id, Category.all, :id, :name, { prompt: "Select Category" }, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"%>
   </div>
 
+  <% if product.persisted? && product.images.attached? %>
   <div class="field">
   <strong>Current Images:</strong>
   <ul>
@@ -60,14 +61,14 @@
         <label>
           <%= check_box_tag "product[remove_images][]", image.blob.id %> Remove
         </label>
-      </li>
     <% end %>
   </ul>
 </div>
+<% end %>
 
-  <div class="field">
-    <%= form.label :images %>
-    <%= form.file_field :images, multiple: true %> 
+   <div class="form-group mb-3">
+    <%= form.label :new_images, "Upload Images", class: "form-control-label" %>
+    <%= form.file_field :new_images, multiple: true, name: "product[new_images][]", class: "form-control" %>
   </div>
 
   <div class="inline">
