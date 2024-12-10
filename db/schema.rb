@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_08_212818) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_08_235541) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -51,6 +51,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_08_212818) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "product_solds", force: :cascade do |t|
+    t.integer "sale_id", null: false
+    t.integer "product_id", null: false
+    t.integer "amount"
+    t.decimal "sale_price"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_solds_on_product_id"
+    t.index ["sale_id"], name: "index_product_solds_on_sale_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.string "description", null: false
@@ -72,6 +83,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_08_212818) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "sales", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.decimal "total_sale"
+    t.string "client"
+    t.date "deleted_at"
+    t.datetime "realization_datetime"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sales_on_user_id"
   end
 
   create_table "sizes", force: :cascade do |t|
@@ -100,8 +122,11 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_08_212818) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "product_solds", "products"
+  add_foreign_key "product_solds", "sales"
   add_foreign_key "products", "categories"
   add_foreign_key "products", "colors"
   add_foreign_key "products", "sizes"
+  add_foreign_key "sales", "users"
   add_foreign_key "users", "roles"
 end

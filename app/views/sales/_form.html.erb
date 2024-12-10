@@ -13,12 +13,7 @@
 
   <div class="my-5">
     <%= form.label :user_id %>
-    <%= form.text_field :user_id, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
-    <%= form.label :total_sale %>
-    <%= form.text_field :total_sale, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <%= form.collection_select :user_id, User.all, :id, :alias, { prompt: "Select User" }, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full"%>
   </div>
 
   <div class="my-5">
@@ -27,16 +22,104 @@
   </div>
 
   <div class="my-5">
-    <%= form.label :deleted_at %>
-    <%= form.date_field :deleted_at, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
-
-  <div class="my-5">
     <%= form.label :realization_datetime %>
     <%= form.datetime_field :realization_datetime, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
   </div>
 
-  <div class="inline">
+  <div class="my-5">
+    <button type="button" 
+            id="add-product-btn" 
+            class="rounded-lg py-2 px-4 bg-green-600 text-white font-medium" 
+            data-action="open-modal">
+      Agregar Producto
+    </button>
+  </div>
+
+  <div id="product-list" class="mt-5">
+    <h3 class="font-bold mb-2">Productos Agregados:</h3>
+    <ul id="product-items" class="list-disc pl-5"></ul>
+  </div>
+  <%= hidden_field_tag 'sale[products]', '', id: 'products-field' %>
+
+  <div id="product-modal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-5 rounded-lg shadow-lg w-96">
+      <h2 class="text-xl font-bold mb-4">Agregar Producto</h2>
+      <label for="product" class="block">Producto</label>
+      <select id="product" class="block w-full shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2">
+        <%# Aquí deberías cargar tus productos desde el modelo %>
+        <% Product.all.each do |product| %>
+          <option value="<%= product.id %>"><%= product.name %></option>
+        <% end %>
+      </select>
+      
+      <label for="quantity" class="block mt-3">Cantidad</label>
+      <input type="number" id="quantity" min="1" class="block w-full shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2">
+      
+      <div class="mt-4 flex justify-end">
+        <button type="button" 
+                id="save-product-btn" 
+                class="mr-3 bg-blue-600 text-white py-2 px-4 rounded-lg">
+          Agregar
+        </button>
+        <button type="button" 
+                id="close-modal-btn" 
+                class="bg-gray-300 text-black py-2 px-4 rounded-lg">
+          Cerrar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="inline mt-5">
     <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const productModal = document.getElementById('product-modal');
+    const productList = document.getElementById('product-items');
+    const productData = [];
+
+    document.getElementById('add-product-btn').addEventListener('click', () => {
+      productModal.classList.remove('hidden');
+    });
+
+    document.getElementById('close-modal-btn').addEventListener('click', () => {
+      productModal.classList.add('hidden');
+    });
+
+    document.getElementById('save-product-btn').addEventListener('click', () => {
+      const product = document.getElementById('product');
+      const quantity = document.getElementById('quantity').value;
+
+      if (product.value && quantity > 0) {
+        const productName = product.options[product.selectedIndex].text;
+
+        productData.push({ id: product.value, name: productName, quantity });
+
+        const listItem = document.createElement('li');
+        listItem.textContent = `${productName} - Cantidad: ${quantity}`;
+        listItem.className = "flex justify-between items-center";
+        
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = "Eliminar";
+        deleteBtn.className = "ml-4 bg-red-600 text-white py-1 px-2 rounded";
+        deleteBtn.addEventListener('click', () => {
+          const index = productData.findIndex(p => p.id === product.value && p.quantity == quantity);
+          if (index > -1) productData.splice(index, 1);
+          productList.removeChild(listItem);
+        });
+
+        listItem.appendChild(deleteBtn);
+        productList.appendChild(listItem);
+
+        product.value = '';
+        document.getElementById('quantity').value = '';
+        productModal.classList.add('hidden');
+      } else {
+        alert("Selecciona un producto y una cantidad válida.");
+      }
+    });
+  });
+</script>
