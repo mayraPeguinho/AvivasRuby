@@ -4,7 +4,31 @@
   </div>
   <% flash.discard(:notice) %>
 <% end %>
-<div>
-  <h1 class="font-bold text-4xl">Home#index</h1>
-  <p>Find me in app/views/home/index.html.erb</p>
+
+<div class="flex flex-wrap justify-center gap-6 w-full h-full items-start pt-12">
+  <% if @products.present? %>
+    <% @products.each do |product| %>
+      <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden sm:max-w-md md:max-w-lg lg:max-w-xl">
+        
+        
+
+        <!-- Información del producto -->
+        <div class="p-5 bg-lilac">
+          <h5 class="text-lg font-bold text-gray-900"><%= product.name %></h5>
+          <p class="mt-2 text-gray-700 text-sm sm:text-base"><%= product.description %></p>
+          <p class="mt-2 text-gray-700 text-sm sm:text-base">Price: $<%= product.unit_price %></p>
+          <p class="mt-2 text-gray-700 text-sm sm:text-base">Stock: <%= product.available_stock %></p>
+        </div>
+      </div>
+    <% end %>
+  <% else %>
+    <p class="mt-2 text-gray-700 text-sm sm:text-base">Products not available</p>
+  <% end %>
+</div>
+<div data-controller="carousel" class="swiper" data-carousel-options-value='{"direction": "vertical"}'>
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">Slide 1</div>
+    <div class="swiper-slide">Slide 2</div>
+    <div class="swiper-slide">Slide 3</div>
+  </div>
 </div>

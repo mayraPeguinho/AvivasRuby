@@ -22,3 +22,18 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+git clone https://github.com/mayraPeguinho/AvivasRuby.git
+
+cd AvivasRuby
+
+bundle install
+
+sudo apt-get install libvips42
+
+rails db:migrate
+
+rails db:seed
+
+bin/dev

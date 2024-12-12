@@ -26,7 +26,7 @@
   <body class="h-screen w-screen">
     <nav class="w-full h-auto bg-customPink flex justify-between">
       <div class="flex ">
-        <p class='text-darkPurple py-5 px-2'>Home</p>
+        <%= link_to 'Home', home_index_path, class: 'text-darkPurple py-5 px-2' %>
         <% if user_signed_in? %>
           <%= link_to 'Products', products_path, class: 'text-darkPurple py-5 px-2' %>
           <%= link_to 'Sales', sales_path, class: 'text-darkPurple py-5 px-2' %>

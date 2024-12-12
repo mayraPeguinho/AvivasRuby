@@ -12,6 +12,12 @@ class Product < ApplicationRecord
 
   validate :must_have_at_least_one_image, on: [:create, :update]
 
+  def resized_images(width, height)
+    images.map do |image|
+      image.variant(resize_to_fill: [width, height]).processed
+    end
+  end
+
   private
 
   def must_have_at_least_one_image
