@@ -54,13 +54,10 @@
   <% if product.persisted? && product.images.attached? %>
   <div class="field">
   <strong>Current Images:</strong>
-  <ul>
+  <ul class="flex">
     <% product.images.each do |image| %>
       <li class="flex items-center gap-4">
         <%= image_tag image, class: "w-32 h-32 object-cover" %>
-        <label>
-          <%= check_box_tag "product[remove_images][]", image.blob.id %> Remove
-        </label>
     <% end %>
   </ul>
 </div>
