@@ -1,13 +1,20 @@
 <div class="w-full">
 
-  <% content_for :title, "Usuarios" %>
+  <% content_for :title, "Users" %>
 
   <div class="flex justify-between">
-    <h1 class="font-bold text-3xl text-darkPurple">Usuarios</h1>
+    <h1 class="font-bold text-3xl text-darkPurple">Users</h1>
     <%= link_to "New User", new_user_registration_path, class: "bg-lilac text-darkPurple p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
   </div>
 
-  <p class="text-darkLilac mb-6">Aquí podrá ver la información sobre los usuarios del sistema.</p>
+  <p class="text-darkLilac mb-6">Here you can see information about the users of the system.</p>
+
+  <% if flash[:notice] %>
+  <div class="alert alert-success">
+    <%= flash[:notice] %>
+  </div>
+  <% flash.discard(:notice) %>
+<% end %>
 
   <div id="users" class="min-w-full">
     <table class="min-w-full table-auto border-collapse">

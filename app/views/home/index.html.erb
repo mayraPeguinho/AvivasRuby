@@ -11,7 +11,8 @@
       <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden sm:max-w-md md:max-w-lg lg:max-w-xl">
         
         <div class="p-5 bg-lilac">
-          <%= image_tag product.images.first, class: "w-40 h-40 object-cover" %>
+          <%= image_tag  product.images.first, class: "w-44 h-32 object-cover" %>
+
           <h5 class="text-lg font-bold text-gray-900"><%= product.name %></h5>
           <p class="mt-2 text-gray-700 text-sm sm:text-base"><%= product.description %></p>
           <p class="mt-2 text-gray-700 text-sm sm:text-base">Price: $<%= product.unit_price %></p>
