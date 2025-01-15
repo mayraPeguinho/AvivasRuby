@@ -6,9 +6,12 @@
 
   <p>
   <strong>Images:</strong>
+
+  <div class="flex">
   <% product.images.each do |image| %>
     <%= image_tag image, class: "w-32 h-32 object-cover" %>
   <% end %>
+  </div>
 </p>
 
   <p class="my-5">
@@ -16,39 +19,36 @@
     <%= product.description %>
   </p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Inventory entry date:</strong>
-    <%= product.inventory_entry_date %>
-  </p>
+<p class="my-5 flex">
+  <strong class="block font-medium mb-1">Available stock:&nbsp;</strong>
+  <%= product.available_stock %>
+</p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Delete date:</strong>
-    <%= product.deleted_at %>
-  </p>
+<p class="my-5 flex">
+  <strong class="block font-medium mb-1">Unit price:&nbsp;</strong>
+  <%= product.unit_price %>
+</p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Available stock:</strong>
-    <%= product.available_stock %>
-  </p>
+<p class="my-5 flex">
+  <strong class="block font-medium mb-1">Tamaño:&nbsp;</strong>
+  <%= product.size&.name || "Sin tamaño" %>
+</p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Unit price:</strong>
-    <%= product.unit_price %>
-  </p>
+<p class="my-5 flex">
+  <strong class="block font-medium mb-1">Color:&nbsp;</strong>
+  <%= product.color&.name || "Sin color" %>
+</p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Size:</strong>
-    <%= product.size_id %>
-  </p>
+<p class="my-5 flex">
+  <strong class="block font-medium mb-1">Categoría:&nbsp;</strong>
+  <%= product.category&.name || "Sin categoría" %>
+</p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Color:</strong>
-    <%= product.color_id %>
-  </p>
+<% if user_signed_in? %>
+  <p class="my-5 flex">
+  <strong class="block font-medium mb-1">Inventory entry date:&nbsp;</strong>
+  <%= product.inventory_entry_date %>
+</p>
 
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Category:</strong>
-    <%= product.category_id %>
-  </p>
-
+<% end %>
 </div>

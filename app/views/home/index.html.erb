@@ -35,7 +35,7 @@
   <div class="flex flex-wrap justify-center gap-6 w-full">
     <% if @products.present? %>
       <% @products.each do |product| %>
-        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden sm:max-w-md md:max-w-lg lg:max-w-xl">
+        <%= link_to product_path(product), class: "max-w-sm bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden sm:max-w-md md:max-w-lg lg:max-w-xl" do %>
           <div class="p-5 bg-lilac">
             <% if product.images.any? %>
               <%= image_tag product.images.first, class: "w-44 h-32 object-cover" %>
@@ -49,12 +49,12 @@
             <p class="mt-2 text-gray-700 text-sm sm:text-base"><%= product.description %></p>
             <p class="mt-2 text-gray-700 text-sm sm:text-base">Precio: $<%= product.unit_price %></p>
             <p class="mt-2 text-gray-700 text-sm sm:text-base">Stock: <%= product.available_stock %></p>
+            <p class="mt-2 text-gray-700 text-sm sm:text-base">Categoría: <%= product.category&.name || "Sin categoría" %></p>
           </div>
-        </div>
+        <% end %>
       <% end %>
     <% else %>
       <p class="mt-2 text-gray-700 text-sm sm:text-base">No hay productos disponibles</p>
     <% end %>
   </div>
 </div>
-
