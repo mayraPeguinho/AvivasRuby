@@ -1,5 +1,7 @@
 class HomeController < ApplicationController
   def index
-    @products = Product.where(deleted_at: nil)
+    @q = Product.ransack(params[:q])
+    @products = @q.result.includes(:category).where(deleted_at: nil)
+    @categories = Category.all # Para la lista desplegable
   end
 end

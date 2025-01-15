@@ -18,6 +18,10 @@ class Product < ApplicationRecord
     end
   end
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["name", "description", "category_id"]
+  end
+
   private
 
   def must_have_at_least_one_image
