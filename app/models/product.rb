@@ -4,10 +4,10 @@ class Product < ApplicationRecord
   belongs_to :color, optional: true
   belongs_to :category
 
-  validates :name, presence: true
-  validates :description, presence: true
-  validates :unit_price, presence: true
-  validates :available_stock, presence: true
+  validates :name, presence: true, length: { minimum: 2, maximum: 30 }
+  validates :description, presence: true, length: {  minimum: 4, maximum: 150 }
+  validates :unit_price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+  validates :available_stock, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :inventory_entry_date, presence: true
 
   validate :must_have_at_least_one_image, on: [:create, :update]
@@ -25,8 +25,6 @@ class Product < ApplicationRecord
   private
 
   def must_have_at_least_one_image
-    if images.blank? && !images.attached?
-      errors.add(:images, "must have at least one image")
-    end
+    errors.add(:images, "must have at least one image") if images.blank?
   end
 end
