@@ -1,6 +1,7 @@
 class CategoriesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_category, only: %i[ show edit update destroy ]
+  before_action :check_associations, only: %i[edit update destroy]
 
   # GET /categories or /categories.json
   def index
@@ -27,6 +28,7 @@ class CategoriesController < ApplicationController
     respond_to do |format|
       if @category.save
         format.html { redirect_to product_variants_path, notice: "Category was successfully created." }
+        format.json { render :show, status: :created, location: @category }
       else
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @category.errors, status: :unprocessable_entity }
@@ -58,13 +60,24 @@ class CategoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_category
-      @category = Category.find(params.expect(:id))
-    end
 
-    # Only allow a list of trusted parameters through.
-    def category_params
-      params.expect(category: [ :name ])
+  # Use callbacks to share common setup or constraints between actions.
+  def set_category
+    @category = Category.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def category_params
+    params.require(:category).permit(:name)
+  end
+
+  # Prevent editing or deleting if there are associated products
+  def check_associations
+    if @category.products.exists?
+      respond_to do |format|
+        format.html { redirect_to product_variants_path, notice: "Cannot edit or delete category with associated products." }
+        format.json { render json: { error: "Cannot edit or delete category with associated products." }, status: :unprocessable_entity }
+      end
     end
+  end
 end

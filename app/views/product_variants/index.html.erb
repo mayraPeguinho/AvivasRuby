@@ -1,4 +1,4 @@
-<h1>Product Variants</h1>
+<h1 class="text-3xl text-darkPurple p-5">Product Variants</h1>
 <% if flash[:notice] %>
 <div class="alert alert-success">
   <%= flash[:notice] %>
@@ -26,8 +26,10 @@
           <td class="px-4 py-2"><%= color.name %></td>
           <td class="px-4 py-2 text-center flex">
             <%= link_to 'Edit', edit_color_path(color.id), class: "text-yellow-500 hover:text-yellow-700" %>
-            <%= link_to 'Delete', edit_color_path(color.id), class: "text-red-500 hover:text-red-700" %>
-          </td>
+        <%= button_to "Delete", color_path(color.id), method: :delete, 
+      data: { turbo_confirm: "¿Estás seguro de que deseas eliminar este color?" },
+      class: "text-red-500 hover:text-red-700" %>
+
         </tr>
       <% end %>
     </tbody>
@@ -54,8 +56,10 @@
           <td class="px-4 py-2"><%= category.name %></td>
           <td class="px-4 py-2 text-center flex">
             <%= link_to 'Edit', edit_category_path(category.id), class: "text-yellow-500 hover:text-yellow-700" %>
-            <%= link_to 'Delete', edit_category_path(category.id), class: "text-red-500 hover:text-red-700" %>
-          </td>
+            <%= button_to "Delete", category_path(category.id), method: :delete, 
+            data: { turbo_confirm: "¿Estás seguro de que deseas eliminar esta categoria?" },
+            class: "text-red-500 hover:text-red-700" %>
+            </td>
         </tr>
       <% end %>
     </tbody>
@@ -83,8 +87,10 @@
           <td class="px-4 py-2"><%= size.name %></td>
           <td class="px-4 py-2 text-center flex">
             <%= link_to 'Edit', edit_size_path(size.id), class: "text-yellow-500 hover:text-yellow-700" %>
-            <%= link_to 'Delete', edit_size_path(size.id), class: "text-red-500 hover:text-red-700" %>
-          </td>
+            <%= button_to "Delete", size_path(size.id), method: :delete, 
+            data: { turbo_confirm: "¿Estás seguro de que deseas eliminar este talle?" },
+            class: "text-red-500 hover:text-red-700" %>
+            </td>
         </tr>
       <% end %>
     </tbody>

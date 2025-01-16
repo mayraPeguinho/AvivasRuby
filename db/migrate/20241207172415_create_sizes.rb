@@ -5,5 +5,8 @@ class CreateSizes < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+
+    # add_index :sizes, :name, unique: true
+
   end
 end
