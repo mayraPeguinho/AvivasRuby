@@ -54,7 +54,7 @@ class ColorsController < ApplicationController
     @color.destroy!
 
     respond_to do |format|
-      format.html { redirect_to colors_path, status: :see_other, notice: "Color was successfully destroyed." }
+      format.html { redirect_to product_variants_path, status: :see_other, notice: "Color was successfully destroyed." }
       format.json { head :no_content }
     end
   end
