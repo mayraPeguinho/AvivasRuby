@@ -1,6 +1,11 @@
 Rails.application.routes.draw do
   resources :sales
-  resources :products
+  resources :products do
+    member do
+      get :edit_stock  # Nueva ruta para editar solo el stock
+      patch :update_stock  # Ruta para actualizar solo el stock
+    end
+  end
   resources :sizes
   resources :categories
   resources :colors

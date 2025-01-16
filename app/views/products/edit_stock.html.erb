@@ -1,0 +1,9 @@
+<%= form_with(model: @product, url: update_stock_product_path(@product), method: :patch, local: true) do |form| %>
+  <div class="my-3">
+    <%= form.label :available_stock, "Available Stock", class: "block text-sm font-medium text-gray-700" %>
+    <%= form.number_field :available_stock, class: "block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+  </div>
+  <div>
+    <%= form.submit "Update Stock", class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700" %>
+  </div>
+<% end %>

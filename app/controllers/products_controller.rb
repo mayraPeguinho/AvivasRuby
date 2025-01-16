@@ -1,11 +1,11 @@
 class ProductsController < ApplicationController
-  before_action :set_product, only: %i[ show edit update destroy ]
+  before_action :set_product, only: %i[show edit update destroy update_stock]
+  before_action :check_if_deleted, only: %i[edit update edit_stock update_stock destroy]
 
   # GET /products or /products.json
   def index
-    @products = Product.where(deleted_at: nil)
+    @products = Product.order(:deleted_at, :name)
   end
-  
 
   # GET /products/1 or /products/1.json
   def show
@@ -23,9 +23,9 @@ class ProductsController < ApplicationController
   # POST /products or /products.json
   def create
     params[:product][:images] = params[:product][:new_images] if params[:product][:new_images].present?
-  
+
     @product = Product.new(product_params.except(:new_images))
-  
+
     respond_to do |format|
       if @product.save
         format.html { redirect_to @product, notice: "Product was successfully created." }
@@ -55,7 +55,7 @@ class ProductsController < ApplicationController
   # DELETE /products/1 or /products/1.json
   def destroy
     @product = Product.find(params[:id])
-  
+
     if @product.update(deleted_at: Time.current, available_stock: 0)
       respond_to do |format|
         format.html { redirect_to products_path, status: :see_other, notice: "Product was successfully destroyed." }
@@ -69,25 +69,50 @@ class ProductsController < ApplicationController
     end
   end
 
-  private
+ # GET /products/:id/edit_stock
+def edit_stock
+  @product = Product.find(params[:id])
+end
 
-
-  def save_images
-  params[:product][:new_images].each do |image|
-    next if image.blank?
-    @product.images.attach(image)
+# PATCH /products/:id/update_stock
+def update_stock
+  @product = Product.find(params[:id])
+  if @product.update(stock_params)
+    redirect_to @product, notice: "Stock updated successfully."
+  else
+    render :edit_stock, alert: "There was an error updating the stock."
   end
 end
 
-    # Use callbacks to share common setup or constraints between actions.
-  def set_product
-    @product = Product.find(params.expect(:id))
+  private
+
+  # Método para adjuntar imágenes
+  def save_images
+    params[:product][:new_images].each do |image|
+      next if image.blank?
+      @product.images.attach(image)
+    end
   end
 
-  # Only allow a list of trusted parameters through.
-    
+  # Establece el producto que se está manipulando
+  def set_product
+    @product = Product.find(params[:id]) # Corregido
+  end
+
+  # Parámetros permitidos para actualizar productos
   def product_params
     params.require(:product).permit(:name, :description, :inventory_entry_date, :available_stock, :unit_price, :size_id, :color_id, :category_id, images: [], new_images: [])
   end
-  
+
+  # Parámetros permitidos para actualizar solo el stock
+  def stock_params
+    params.require(:product).permit(:available_stock)
+  end
+
+  def check_if_deleted
+    if @product.deleted_at.present?
+      redirect_to @product, alert: "This product has been deleted and cannot be modified."
+    end
+  end
 end
+
