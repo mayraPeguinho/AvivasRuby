@@ -40,14 +40,14 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_08_235541) do
   end
 
   create_table "categories", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name", limit: 20, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_categories_on_name", unique: true
   end
 
   create_table "colors", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name", limit: 20, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_colors_on_name", unique: true
@@ -65,12 +65,12 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_08_235541) do
   end
 
   create_table "products", force: :cascade do |t|
-    t.string "name", null: false
-    t.string "description", null: false
+    t.string "name", limit: 30, null: false
+    t.string "description", limit: 150, null: false
     t.date "inventory_entry_date", null: false
     t.date "deleted_at"
     t.integer "available_stock", null: false
-    t.decimal "unit_price", null: false
+    t.decimal "unit_price", precision: 10, scale: 2, null: false
     t.integer "size_id"
     t.integer "color_id"
     t.integer "category_id", null: false
@@ -79,6 +79,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_08_235541) do
     t.index ["category_id"], name: "index_products_on_category_id"
     t.index ["color_id"], name: "index_products_on_color_id"
     t.index ["size_id"], name: "index_products_on_size_id"
+    t.check_constraint "available_stock >= 0", name: "check_available_stock_positive"
+    t.check_constraint "unit_price >= 0", name: "check_unit_price_positive"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -99,7 +101,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_08_235541) do
   end
 
   create_table "sizes", force: :cascade do |t|
-    t.string "name", null: false
+    t.string "name", limit: 20, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_sizes_on_name", unique: true

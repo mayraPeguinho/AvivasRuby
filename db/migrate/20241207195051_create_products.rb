@@ -17,6 +17,5 @@ class CreateProducts < ActiveRecord::Migration[8.0]
 
     add_check_constraint :products, "available_stock >= 0", name: "check_available_stock_positive"
     add_check_constraint :products, "unit_price >= 0", name: "check_unit_price_positive"
-    add_check_constraint :products, "delete_date IS NULL OR delete_date > inventory_entry_date", name: "check_valid_delete_date"
   end
 end
