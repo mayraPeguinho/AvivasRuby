@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :redirect_if_not_authenticated, only: [ :new, :create, :update ]
-  skip_before_action :require_no_authentication, only: [ :new, :create, :update ]
-  before_action :configure_sign_up_params, only: [ :create ]
-  before_action :configure_account_update_params, only: [ :update ]
+  before_action :redirect_if_not_authenticated, only: [:new, :create, :update]
+  before_action :check_permissions, only: [:new, :create]
+  skip_before_action :require_no_authentication, only: [:new, :create, :update]
+  before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_account_update_params, only: [:update]
 
   def create
     build_resource(sign_up_params)
@@ -14,7 +15,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
 
     if resource.save
-      redirect_to users_path, notice: "Nuevo usuario agregado."
+      redirect_to users_path, notice: "New User."
     else
       clean_up_passwords(resource)
       set_minimum_password_length
@@ -23,29 +24,23 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-
-  # # GET /resource/edit
-  # def edit
-  #   super
-  # end
-
-  # # PUT /resource
-  # def update
-  #   if @user.update(user_params)
-  #     redirect_to users_path, notice: 'Usuario actualizado correctamente.'
-  #   else
-  #     render :edit
-  #   end
-  # end
-
   private
 
+  # Redirige si el usuario no ha iniciado sesión
   def redirect_if_not_authenticated
     unless user_signed_in?
       redirect_to root_path, alert: "Debes iniciar sesión para registrarte."
     end
   end
 
+  # Verifica que el usuario tenga permisos adecuados
+  def check_permissions
+    if current_user.role_id == 3
+      redirect_to root_path, alert: "No tienes permiso para acceder a esta sección."
+    end
+  end
+
+  # Chequea si el usuario tipo 2 intenta crear usuarios con rol 1
   def check_role_permission
     if current_user.role_id == 2 && params[:user][:role_id] == "1"
       resource.errors.add(:role_id, "No puedes crear usuarios con rol de administrador.")
@@ -59,23 +54,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   protected
 
-  # If you have extra params to permit, append them to the sanitizer.
+  # Configura los parámetros adicionales permitidos al registrarse
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [ :alias, :role_id, :entry_date, :tel ])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:alias, :role_id, :entry_date, :tel])
   end
 
-  # If you have extra params to permit, append them to the sanitizer.
+  # Configura los parámetros adicionales permitidos al actualizar
   def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [ :alias, :role_id, :entry_date, :tel ])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:alias, :role_id, :entry_date, :tel])
   end
-
-  # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
-  # end
-
-  # The path used after sign up for inactive accounts.
-  # def after_inactive_sign_up_path_for(resource)
-  #   super(resource)
-  # end
 end

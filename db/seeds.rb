@@ -1,22 +1,44 @@
 # Create roles
-admin_role = Role.create(name: 'Administrator')
-gerente_role = Role.create(name: 'Manager')
-empleado_role = Role.create(name: 'Employee')
+admin_role = Role.find_or_create_by(name: 'Administrator')
+manager_role = Role.find_or_create_by(name: 'Manager')
+employee_role = Role.find_or_create_by(name: 'Employee')
 
-user = User.create(
-  email: 'admin@gmail.com',
-  password: 'admin123',
-  alias: 'admin_alias',
-  tel: '123456789',
-  entry_date: Date.today,
-  role: admin_role
-)
-
-if user.persisted?
-  puts "User created successfully."
-else
-  puts "Error creating user: #{user.errors.full_messages}"
+# Create administrators
+3.times do |i|
+  User.create!(
+    email: "admin#{i + 1}@example.com",
+    password: "admin#{i + 1}",
+    alias: "admin_alias_#{i + 1}",
+    tel: "12345678#{i}",
+    entry_date: Date.today - (i * 10).days,
+    role: admin_role
+  )
 end
+
+# Create managers
+4.times do |i|
+  User.create!(
+    email: "manager#{i + 1}@example.com",
+    password: "manager#{i + 1}",
+    alias: "manager_alias_#{i + 1}",
+    tel: "22345678#{i}",
+    entry_date: Date.today - (i * 15).days,
+    role: manager_role
+  )
+end
+
+# Create employees
+3.times do |i|
+  User.create!(
+    email: "employee#{i + 1}@example.com",
+    password: "employee#{i + 1}",
+    alias: "employee_alias_#{i + 1}",
+    tel: "32345678#{i}",
+    entry_date: Date.today - (i * 20).days,
+    role: employee_role
+  )
+end
+
 
 # Create colors
 colors = %w[Red Green Blue Yellow Orange Purple Pink White Black Gray Brown]

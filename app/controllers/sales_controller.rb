@@ -1,4 +1,5 @@
 class SalesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_sale, only: %i[show edit update destroy]
   before_action :ensure_active_sale, only: %i[edit update destroy]
 

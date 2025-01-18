@@ -16,9 +16,13 @@ class Ability
         other_user.id == user.id || other_user.role_id != 1
       end
       cannot :create, User, role_id: 1
-    else
+    elsif user.role_id == 3
       can :read, User, id: user.id
       can :update, User, id: user.id
+
+      can :manage, Product
+      can :manage, Sale
+      cannot :index, User
     end
   end
 end

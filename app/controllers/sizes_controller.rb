@@ -1,4 +1,5 @@
 class SizesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_size, only: %i[show edit update destroy]
   before_action :check_associations, only: %i[edit update destroy]
 

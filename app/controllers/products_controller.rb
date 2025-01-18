@@ -1,4 +1,5 @@
 class ProductsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_product, only: %i[show edit update destroy update_stock]
   before_action :check_if_deleted, only: %i[edit update edit_stock update_stock destroy]
 
