@@ -4,8 +4,9 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[edit update activate deactivate]
 
   def index
-    @users = User.all
+    @users = User.order(active: :desc)
   end
+  
 
   def edit
     # Verifica si el usuario está activo antes de permitir la edición

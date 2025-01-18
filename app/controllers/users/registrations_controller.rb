@@ -8,21 +8,25 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_account_update_params, only: [:update]
 
   def create
-    build_resource(sign_up_params)
-
+    puts "En el método create"
+    puts "Parámetros del formulario: #{sign_up_params.inspect}"
+  
     if check_role_permission
+      puts "Rol no permitido, salida anticipada."
       return
     end
-
-    if resource.save
-      redirect_to users_path, notice: "New User."
-    else
-      clean_up_passwords(resource)
-      set_minimum_password_length
-      render :new
-      nil
+  
+    build_resource(sign_up_params)
+    
+    super do |resource|
+      if resource.persisted?
+        puts "Recurso guardado exitosamente"
+      else
+        puts "Errores al guardar el recurso: #{resource.errors.full_messages.inspect}"
+      end
     end
   end
+  
 
   private
 
@@ -56,8 +60,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # Configura los parámetros adicionales permitidos al registrarse
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:alias, :role_id, :entry_date, :tel])
-  end
+  puts "Configurando parámetros de sign_up"
+  devise_parameter_sanitizer.permit(:sign_up, keys: [:alias, :role_id, :entry_date, :tel])
+  puts "Parámetros permitidos: #{devise_parameter_sanitizer.sanitize(:sign_up).inspect}"
+end
 
   # Configura los parámetros adicionales permitidos al actualizar
   def configure_account_update_params
