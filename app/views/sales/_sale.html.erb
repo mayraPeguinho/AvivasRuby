@@ -1,12 +1,12 @@
 <div id="<%= dom_id sale %>">
   <p class="my-5">
     <strong class="block font-medium mb-1">User:</strong>
-    <%= sale.user_id %>
+    <%= sale.user.alias %>
   </p>
 
   <p class="my-5">
     <strong class="block font-medium mb-1">Total sale:</strong>
-    <%= sale.total_sale %>
+    <%= number_to_currency(sale.total_sale) %>
   </p>
 
   <p class="my-5">
@@ -15,13 +15,38 @@
   </p>
 
   <p class="my-5">
-    <strong class="block font-medium mb-1">Deleted at:</strong>
-    <%= sale.deleted_at %>
-  </p>
-
-  <p class="my-5">
     <strong class="block font-medium mb-1">Realization datetime:</strong>
     <%= sale.realization_datetime %>
   </p>
 
+  <% if sale.deleted_at %>
+    <p class="my-5">
+      <strong class="block font-medium mb-1">Deleted at:</strong>
+      <%= sale.deleted_at %>
+    </p>
+  <% end %>
+
+  <div id="sale_products" class="w-1/2">
+    <strong class="block font-medium mb-1">Products Sold:</strong>
+    <table class="min-w-full table-auto border-collapse">
+      <thead class="bg-lilac text-white">
+        <tr>
+          <th class="px-4 py-2 border">Product Name</th>
+          <th class="px-4 py-2 border">Amount</th>
+          <th class="px-4 py-2 border">Sale Price</th>
+          <th class="px-4 py-2 border">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% sale.product_solds.each do |product_sold| %>
+          <tr class="border-b hover:bg-gray-100">
+            <td class="px-4 py-2"><%= product_sold.product.name %></td>
+            <td class="px-4 py-2"><%= product_sold.amount %></td>
+            <td class="px-4 py-2"><%= number_to_currency(product_sold.sale_price) %></td>
+            <td class="px-4 py-2"><%= number_to_currency(product_sold.amount * product_sold.sale_price) %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </div>
