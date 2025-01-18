@@ -29,21 +29,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # Redirige si el usuario no ha iniciado sesión
   def redirect_if_not_authenticated
     unless user_signed_in?
-      redirect_to root_path, alert: "Debes iniciar sesión para registrarte."
+      redirect_to root_path, alert: "You must be logged in to complete this action."
     end
   end
 
   # Verifica que el usuario tenga permisos adecuados
   def check_permissions
     if current_user.role_id == 3
-      redirect_to root_path, alert: "No tienes permiso para acceder a esta sección."
+      redirect_to root_path, alert: "You do not have permission to access this section."
     end
   end
 
   # Chequea si el usuario tipo 2 intenta crear usuarios con rol 1
   def check_role_permission
     if current_user.role_id == 2 && params[:user][:role_id] == "1"
-      resource.errors.add(:role_id, "No puedes crear usuarios con rol de administrador.")
+      resource.errors.add(:role_id, "You cannot create users with an administrator role.")
       clean_up_passwords(resource)
       set_minimum_password_length
       render :new

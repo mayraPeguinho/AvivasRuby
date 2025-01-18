@@ -1,53 +1,63 @@
 class UsersController < ApplicationController
   before_action :authenticate_user!
   load_and_authorize_resource
-  before_action :set_user, only: %i[ edit update activate deactivate]
+  before_action :set_user, only: %i[edit update activate deactivate]
 
-    def index
-      @users = User.all
+  def index
+    @users = User.all
+  end
+
+  def edit
+    # Verifica si el usuario está activo antes de permitir la edición
+    if @user.active == false
+      redirect_to users_path, alert: "You cannot edit an inactive user."
+    end
+  end
+
+  def update
+    # Verifica si el usuario está activo antes de permitir la actualización
+    if @user.active == false
+      redirect_to users_path, alert: "You cannot update an inactive user."
+      return
     end
 
-    def edit
-    end
-
-    def update
-      respond_to do |format|
-        if @user.update(user_params)
-          format.html { redirect_to @user, notice: "User was successfully updated." }
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
-      end
-    end
-
-    def deactivate
-      if @user.update(active: false, password: SecureRandom.hex(10))
-        redirect_to users_path, notice: "Usuario desactivado correctamente y contraseña reseteada."
+    respond_to do |format|
+      if @user.update(user_params)
+        format.html { redirect_to @user, notice: "User was successfully updated." }
+        format.json { render :show, status: :ok, location: @user }
       else
-        redirect_to users_path, alert: "No se pudo desactivar el usuario."
+        format.html { render :edit, status: :unprocessable_entity }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
       end
     end
+  end
 
-    def activate
-      if @user.update(active: true, password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
-        redirect_to users_path, notice: "Usuario activado correctamente."
-      else
-        flash[:alert] = "No se pudo activar el usuario."
-        render :edit # O la vista que uses para activar
-      end
+  def deactivate
+    if @user.update(active: false, password: SecureRandom.hex(10))
+      redirect_to users_path, notice: "User successfully deactivated and password reset."
+    else
+      redirect_to users_path, alert: "The user could not be deactivated."
     end
+  end
 
-    def destroy
+  def activate
+    if @user.update(active: true, password: params[:user][:password], password_confirmation: params[:user][:password_confirmation])
+      redirect_to users_path, notice: "User activated correctly."
+    else
+      flash[:alert] = "The user could not be activated."
+      render :edit
     end
+  end
 
-    private
-    def set_user
-      @user = User.find(params[:id])
-    end
+  def destroy
+  end
 
-    def user_params
-      params.expect(user: [ :alias, :email, :phone, :password, :role_id, :entry_date ])
-    end
+  private
+  def set_user
+    @user = User.find(params[:id])
+  end
+
+  def user_params
+    params.require(:user).permit(:alias, :email, :phone, :password, :role_id, :entry_date)
+  end
 end

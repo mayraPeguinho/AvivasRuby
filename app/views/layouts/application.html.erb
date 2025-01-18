@@ -38,7 +38,7 @@
       </div>
       <div class="flex">
       <% if not user_signed_in? %>
-        <%= button_to 'Acceder', new_user_session_path, method: :get, class: 'text-darkPurple py-5 px-2' %>
+        <%= button_to 'Sign In', new_user_session_path, method: :get, class: 'text-darkPurple py-5 px-2' %>
       <% end %>
       <% if user_signed_in? %>
         <%= link_to "Product Variants", product_variants_path , class: 'text-darkPurple py-5 px-2' %>

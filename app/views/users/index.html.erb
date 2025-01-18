@@ -1,4 +1,4 @@
-<div class="w-full">
+<div class="w-full p-10">
 
   <% content_for :title, "Users" %>
 
@@ -10,17 +10,22 @@
   <p class="text-darkLilac mb-6">Here you can see information about the users of the system.</p>
 
   <% if flash[:notice] %>
-  <div class="alert alert-success">
+  <div class="w-full max-w-md mx-auto bg-green-500 text-white text-center py-2 px-4 rounded-xl mb-4">
     <%= flash[:notice] %>
   </div>
   <% flash.discard(:notice) %>
+<% end %>
+<% if flash[:alert] %>
+<div class="w-full bg-red-500 max-w-md mx-auto text-white text-center py-2 px-4 rounded-xl mb-4">
+  <%= flash[:alert] %>
+</div>
 <% end %>
 
   <div id="users" class="min-w-full">
     <table class="min-w-full table-auto border-collapse">
       <thead class="bg-lilac text-white">
         <tr>
-          <th class="px-4 py-2 border">Name</th>
+          <th class="px-4 py-2 border">Alias</th>
           <th class="px-4 py-2 border">Email</th>
           <th class="px-4 py-2 border">Role</th>
           <th class="px-4 py-2 border">Active</th>
@@ -35,11 +40,14 @@
             <td class="px-4 py-2"><%= user.role.name %></td>
             <td class="px-4 py-2"><%= user.active ? 'Yes' : 'No' %></td>
             <td class="px-4 py-2 text-center flex">
+            <% if user.active %>
               <%= link_to 'View/Edit', edit_user_path(user.id), class: "text-yellow-500 hover:text-yellow-700" %> 
+              <% end %>
+
               <% if user != current_user %>
-              |
+              
                <% if user.active %>
-                <%= button_to 'Deactivate', deactivate_user_path(user), method: :patch, class: "text-red-500 hover:text-red-700" %>
+|<%= button_to 'Deactivate', deactivate_user_path(user), method: :patch, class: "text-red-500 hover:text-red-700", data: { turbo_confirm: "Are you sure you want to deactivate the user with alias #{user.alias}?" } %>
                 <% else %>
                 <button class="text-green-500 hover:text-green-700" onclick="openModal(<%= user.id %>)">Activate</button>
               <% end %>
@@ -54,35 +62,60 @@
 </div>
 
 <!-- Modal -->
-<div id="activationModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center">
-  <div class="bg-white p-5 rounded shadow-lg">
+<div id="activationModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex justify-center items-center" onclick="closeModal(event)">
+  <div class="bg-white p-5 rounded shadow-lg relative" onclick="event.stopPropagation()">
+
     <h2 class="text-xl font-bold mb-3">Set New Password</h2>
-<%= form_with url: activate_user_path(':id'), method: :patch, local: true, id: "activateUserForm" do |form| %>
-  <%= form.hidden_field :id, id: "user_id" %>
-  <div class="mb-4">
-    <%= form.label :password, "New Password" %>
-    <%= form.password_field :password, name: "user[password]", class: "w-full p-2 border rounded", required: true, minlength: 6 %>
-  </div>
-  <div class="mb-4">
-    <%= form.label :password_confirmation, "Confirm Password" %>
-    <%= form.password_field :password_confirmation, name: "user[password_confirmation]", class: "w-full p-2 border rounded", required: true, minlength: 6 %>
-  </div>
-  <div class="flex justify-end">
-    <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeModal()">Cancel</button>
-    <%= form.submit "Activate", class: "bg-green-500 text-white px-4 py-2 rounded" %>
-  </div>
-<% end %>
+
+    <div id="passwordError" class="w-full bg-red-500 text-white text-center py-2 px-4 rounded-xl mb-4 hidden">
+      Passwords do not match
+    </div>
+
+    <%= form_with url: activate_user_path(':id'), method: :patch, local: true, id: "activateUserForm" do |form| %>
+      <%= form.hidden_field :id, id: "user_id" %>
+      <div class="mb-4">
+        <%= form.label :password, "New Password" %>
+        <%= form.password_field :password, name: "user[password]", class: "w-full p-2 border rounded", required: true, minlength: 6, id: "password" %>
+      </div>
+      <div class="mb-4">
+        <%= form.label :password_confirmation, "Confirm Password" %>
+        <%= form.password_field :password_confirmation, name: "user[password_confirmation]", class: "w-full p-2 border rounded", required: true, minlength: 6, id: "password_confirmation" %>
+      </div>
+      <div class="flex justify-end">
+        <button type="button" class="bg-gray-500 text-white px-4 py-2 rounded mr-2" onclick="closeModal()">Cancel</button>
+        <%= form.submit "Activate", class: "bg-green-500 text-white px-4 py-2 rounded" %>
+      </div>
+    <% end %>
   </div>
 </div>
 
 <script>
 function openModal(userId) {
-  const form = document.getElementById('activateUserForm')
+  const form = document.getElementById('activateUserForm');
   form.action = `/users/${userId}/activate`;
   document.getElementById('user_id').value = userId;
   document.getElementById('activationModal').classList.remove('hidden');
+  // Hide error message when opening modal
+  document.getElementById('passwordError').classList.add('hidden');
 }
-function closeModal() {
-  document.getElementById('activationModal').classList.add('hidden');
+
+function closeModal(event) {
+  if (event.target === document.getElementById('activationModal')) {
+    document.getElementById('activationModal').classList.add('hidden');
+  }
 }
+
+// Function to validate password match before submitting the form
+document.getElementById("activateUserForm").addEventListener("submit", function(event) {
+  const password = document.getElementById("password").value;
+  const passwordConfirmation = document.getElementById("password_confirmation").value;
+
+  if (password !== passwordConfirmation) {
+    // Prevent form submission
+    event.preventDefault();
+    
+    // Show error message
+    document.getElementById('passwordError').classList.remove('hidden');
+  }
+});
 </script>
