@@ -75,7 +75,7 @@ class CategoriesController < ApplicationController
   def check_associations
     if @category.products.exists?
       respond_to do |format|
-        format.html { redirect_to product_variants_path, notice: "Cannot edit or delete category with associated products." }
+        format.html { redirect_to product_variants_path, alert: "Cannot edit or delete category with associated products." }
         format.json { render json: { error: "Cannot edit or delete category with associated products." }, status: :unprocessable_entity }
       end
     end
