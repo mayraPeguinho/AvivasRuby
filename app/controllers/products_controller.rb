@@ -41,7 +41,9 @@ class ProductsController < ApplicationController
   # PATCH/PUT /products/1 or /products/1.json
   def update
     respond_to do |format|
+      # Verificar el número total de imágenes antes de proceder con la actualización
       product_update_params = product_params.except(:new_images)
+
       if @product.update(product_update_params)
         save_images if params[:product][:new_images].present?
         format.html { redirect_to @product, notice: "The product was successfully updated." }
@@ -70,20 +72,20 @@ class ProductsController < ApplicationController
     end
   end
 
- # GET /products/:id/edit_stock
-def edit_stock
-  @product = Product.find(params[:id])
-end
-
-# PATCH /products/:id/update_stock
-def update_stock
-  @product = Product.find(params[:id])
-  if @product.update(stock_params)
-    redirect_to products_path, notice: "Stock updated successfully."
-  else
-    render :edit_stock, alert: "There was an error updating the stock."
+  # GET /products/:id/edit_stock
+  def edit_stock
+    @product = Product.find(params[:id])
   end
-end
+
+  # PATCH /products/:id/update_stock
+  def update_stock
+    @product = Product.find(params[:id])
+    if @product.update(stock_params)
+      redirect_to products_path, notice: "Stock updated successfully."
+    else
+      render :edit_stock, alert: "There was an error updating the stock."
+    end
+  end
 
   private
 
@@ -114,9 +116,14 @@ end
     if @product && @product.deleted_at.present?
       redirect_to @product, alert: "Este producto ha sido eliminado y no puede ser modificado."
     end
-    # Si @product es nil o no tiene una fecha en deleted_at, la ejecución continúa normalmente.
   end
-  
-  
-end
 
+  # Verificar el número total de imágenes antes de la actualización
+  def check_image_limit
+    if params[:product][:new_images].present?
+      total_images = @product.images.size + params[:product][:new_images].size
+      return total_images > 3
+    end
+    false
+  end
+end

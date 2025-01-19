@@ -6,53 +6,59 @@
 
   <p>
   <strong>Images:</strong>
-
   <div class="flex">
-  <% product.images.each do |image| %>
-    <%= image_tag image, class: "w-32 h-32 object-cover" %>
-  <% end %>
+    <% product.images.each do |image| %>
+      <%= image_tag image, class: "w-32 h-32 object-cover" %>
+    <% end %>
   </div>
-</p>
+  </p>
 
   <p class="my-5">
     <strong class="block font-medium mb-1">Description:</strong>
     <%= product.description %>
   </p>
 
-<p class="my-5 flex">
-  <strong class="block font-medium mb-1">Available stock:&nbsp;</strong>
-  <%= product.available_stock %>
-</p>
-
-<p class="my-5 flex">
-  <strong class="block font-medium mb-1">Unit price:&nbsp;</strong>
-  <%= product.unit_price %>
-</p>
-
-<p class="my-5 flex">
-  <strong class="block font-medium mb-1">Tamaño:&nbsp;</strong>
-  <%= product.size&.name || "Sin tamaño" %>
-</p>
-
-<p class="my-5 flex">
-  <strong class="block font-medium mb-1">Color:&nbsp;</strong>
-  <%= product.color&.name || "Sin color" %>
-</p>
-
-<p class="my-5 flex">
-  <strong class="block font-medium mb-1">Categoría:&nbsp;</strong>
-  <%= product.category&.name || "Sin categoría" %>
-</p>
-
-<% if user_signed_in? %>
   <p class="my-5 flex">
-  <strong class="block font-medium mb-1">Inventory entry date:&nbsp;</strong>
-  <%= product.inventory_entry_date %>
+    <strong class="block font-medium mb-1">Available stock:&nbsp;</strong>
+    <%= product.available_stock %>
+  </p>
 
   <p class="my-5 flex">
-  <strong class="block font-medium mb-1">Deleted date:&nbsp;</strong>
-  <%= product.deleted_at %>
-</p>
+    <strong class="block font-medium mb-1">Unit price:&nbsp;</strong>
+    <%= product.unit_price %>
+  </p>
 
-<% end %>
+  <p class="my-5 flex">
+    <strong class="block font-medium mb-1">Tamaño:&nbsp;</strong>
+    <%= product.size&.name || "Sin tamaño" %>
+  </p>
+
+  <p class="my-5 flex">
+    <strong class="block font-medium mb-1">Color:&nbsp;</strong>
+    <%= product.color&.name || "Sin color" %>
+  </p>
+
+  <p class="my-5 flex">
+    <strong class="block font-medium mb-1">Categoría:&nbsp;</strong>
+    <%= product.category&.name || "Sin categoría" %>
+  </p>
+
+  <% if user_signed_in? %>
+    <p class="my-5 flex">
+      <strong class="block font-medium mb-1">Inventory entry date:&nbsp;</strong>
+      <%= product.inventory_entry_date %>
+    </p>
+
+    <p class="my-5 flex">
+      <strong class="block font-medium mb-1">Last updated:&nbsp;</strong>
+      <%= product.updated_at.strftime("%B %d, %Y") %> <!-- Fecha de última modificación -->
+    </p>
+
+    <% if product.deleted_at.present? %>
+      <p class="my-5 flex">
+        <strong class="block font-medium mb-1">Deleted date:&nbsp;</strong>
+        <%= product.deleted_at.strftime("%B %d, %Y") %> <!-- Fecha de eliminación -->
+      </p>
+    <% end %>
+  <% end %>
 </div>

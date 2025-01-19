@@ -1,9 +1,17 @@
-<%= form_with(model: @product, url: update_stock_product_path(@product), method: :patch, local: true) do |form| %>
-  <div class="my-3">
-    <%= form.label :available_stock, "Available Stock", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.number_field :available_stock, class: "block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-  </div>
-  <div>
-    <%= form.submit "Update Stock", class: "bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700" %>
-  </div>
-<% end %>
+<div class="w-2/5 h-full justify-start flex flex-col p-5 gap-3">
+  <h2 class="text-xl font-semibold mb-5">
+    <%= @product.name %>
+  </h2>
+
+  <%= form_with(model: @product, url: update_stock_product_path(@product), method: :patch, local: true) do |form| %>
+    <div class="my-3">
+      <%= form.label :available_stock, "Available Stock", class: "block text-sm font-medium text-gray-700" %>
+      <%= form.number_field :available_stock, class: "block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+    </div>
+    <div class="flex w-full gap-5">
+      <%= form.submit "Update Stock", class: "w-full bg-lilac text-darkPurple p-1 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
+      <%= link_to "Back to products", products_path, class: "justify-center items-center text-center p-1 rounded-xl bg-gray-100 font-medium border border-black hover:bg-black hover:text-white" %>
+    </div>
+  <% end %>
+</div>
+
