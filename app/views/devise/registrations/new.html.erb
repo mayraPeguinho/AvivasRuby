@@ -1,50 +1,55 @@
-<h2 class="text-xl font-bold">New User</h2>
+<div class="w-full h-full items-center justify-start flex flex-col p-5 gap-2">
 
-<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-  <div class="field">
+  <h2 class="text-xl font-bold">New User</h2>
 
-  <div class="field">
-    <%= f.label :alias %><br />
-    <%= f.text_field :alias, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+  <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "flex flex-col gap-1" }) do |f| %>  
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :tel %><br />
-    <%= f.text_field :tel, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+    <div class="w-full">
+      <%= f.label :alias, class: "text-sm font-medium text-gray-700" %>
+      <%= f.text_field :alias, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", required: true %>
+    </div>
 
-  <div class="field">
-    <%= f.label :role_id %>
-    <%= f.collection_select :role_id,  Role.all, :id, :name, { prompt: "Seleccione un Rol" }, required: true, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+    <div class="w-full">
+      <%= f.label :tel, class: "text-sm font-medium text-gray-700" %>
+      <%= f.text_field :tel, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", required: true %>
+    </div>
 
-  <div class="field">
-    <%= f.label :entry_date %>
-    <%= f.date_field :entry_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+    <div class="w-full">
+      <%= f.label :role_id, class: "text-sm font-medium text-gray-700" %>
+      <%= f.collection_select :role_id, Role.all, :id, :name, { prompt: "Select a Role" }, { required: true, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" } %>
+    </div>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+    <div class="w-full">
+      <%= f.label :entry_date, class: "text-sm font-medium text-gray-700" %>
+      <%= f.date_field :entry_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", required: true %>
+    </div>
 
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-    <em>(<%= @minimum_password_length %> characters minimum)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+    <div class="w-full">
+      <%= f.label :email, class: "text-sm font-medium text-gray-700" %>
+      <%= f.email_field :email, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", required: true %>
+    </div>
 
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-  </div>
+    <div class="w-full">
+      <%= f.label :password, class: "text-sm font-medium text-gray-700" %>
+      <% if @minimum_password_length %>
+        <em>(<%= @minimum_password_length %> characters minimum)</em>
+      <% end %>
+      <%= f.password_field :password, autocomplete: "new-password", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", required: true %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit "Confirm" %>
-  </div>
-<% end %>
+    <div class="w-full">
+      <%= f.label :password_confirmation, class: "text-sm font-medium text-gray-700" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", required: true %>
+    </div>
+    <div class="flex gap-2">
 
-<%= link_to "Back to users", users_path, class: "ml-2 rounded-lg py-3 px-5 bg-gray-100 inline-block font-medium" %>
+    <%= f.submit "Confirm", class: "bg-lilac text-darkPurple mt-2 p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
+      <%= link_to "Back to users", users_path, class: "mt-2 p-2 rounded-xl bg-gray-100 font-medium border border-black hover:bg-black hover:text-white" %>
+ 
+    </div>
+
+    <% end %>
+
+
+</div>

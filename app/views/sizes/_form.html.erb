@@ -1,15 +1,15 @@
 <%= form_with(model: size, class: "contents") do |form| %>
   <% if size.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(size.errors.count, "error") %> prohibited this size from being saved:</h2>
+  <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+    <h2><%= pluralize(size.errors.count, "error") %> prohibited this size from being saved:</h2>
 
-      <ul>
-        <% size.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+    <ul class="list-disc pl-5 mt-2">
+      <% size.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 
   <div class="my-5">
     <%= form.label :name %>

@@ -8,25 +8,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_account_update_params, only: [:update]
 
   def create
-    puts "En el método create"
-    puts "Parámetros del formulario: #{sign_up_params.inspect}"
-  
-    if check_role_permission
-      puts "Rol no permitido, salida anticipada."
-      return
-    end
-  
     build_resource(sign_up_params)
-    
-    super do |resource|
-      if resource.persisted?
-        puts "Recurso guardado exitosamente"
+
+    # Valida si el recurso (usuario) es válido y lo guarda
+    if resource.save
+      if resource.active_for_authentication?
+        redirect_to users_path, notice: 'User created successfully'
       else
-        puts "Errores al guardar el recurso: #{resource.errors.full_messages.inspect}"
+        set_flash_message!(:notice, :inactive_signed_up)
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
       end
+    else
+      clean_up_passwords(resource)
+      respond_with resource
     end
   end
-  
 
   private
 

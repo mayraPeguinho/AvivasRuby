@@ -1,60 +1,62 @@
-<div class="mx-auto md:w-2/3 w-full">
+<div class="w-1/3 h-full items-center justify-start flex flex-col p-5 gap-2">
 
-  <h1 class="font-bold text-4xl">Editing user</h1>
-  <% if flash[:notice] %>
-  <div class="alert alert-success">
-    <%= flash[:notice] %>
-  </div>
-  <% flash.discard(:notice) %>
+<h2 class="text-xl font-bold">Editing user</h1>
+ 
+<% if flash[:notice] %>
+<div class="w-full max-w-md mx-auto bg-green-500 text-white text-center py-2 px-4 rounded-xl mb-4">
+  <%= flash[:notice] %>
+</div>
+<% flash.discard(:notice) %>
 <% end %>
 
   <%= form_with(model: @user, class: "contents") do |form| %>
-    <% if @user.errors.any? %>
-      <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-        <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+     <% if @user.errors.any? %>
+  <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+    <h2><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h2>
+
+    <ul class="list-disc pl-5 mt-2">
+      <% @user.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
   
-        <ul>
-          <% @user.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
+    <div class="w-full">
+      <%= form.label :alias , class: "text-sm font-medium text-gray-700" %>
+      <%= form.text_field :alias, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", required: true %>
+          </div>
   
-    <div class="my-5">
-      <%= form.label :alias %>
-      <%= form.text_field :alias, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <div class="w-full">
+      <%= form.label :email , class: "text-sm font-medium text-gray-700" %>
+      <%= form.text_field :email, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", required: true %>
     </div>
   
-    <div class="my-5">
-      <%= form.label :email %>
-      <%= form.text_field :email, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
-    </div>
-  
-    <div class="my-5">
-      <%= form.label :tel %>
-      <%= form.text_field :tel, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <div class="w-full">
+      <%= form.label :tel , class: "text-sm font-medium text-gray-700" %>
+      <%= form.text_field :tel, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", required: true %>
     </div>
 
-    <div class="my-5">
-      <%= form.label :role_id %>
+    <div class="w-full">
+      <%= form.label :role_id , class: "text-sm font-medium text-gray-700" %>
       <%= form.collection_select :role_id, Role.all, :id, :name, { prompt: "Select Role" }, 
         { 
-          required: true, 
-          class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full", 
+          required: true,
+          class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", 
           disabled: @user == current_user 
         } %>
     </div>
   
-    <div class="my-5">
-      <%= form.label :entry_date %>
-      <%= form.date_field :entry_date, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+    <div class="w-full">
+      <%= form.label :entry_date , class: "text-sm font-medium text-gray-700" %>
+      <%= form.date_field :entry_date, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", required: true %>
     </div>
   
-    <div class="inline">
-      <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
-    </div>
+    <div class="flex gap-2">
+      <%= form.submit class: "bg-lilac text-darkPurple mt-2 p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
+      <%= link_to "Back to users", users_path, class: "mt-2 p-2 rounded-xl bg-gray-100 font-medium border border-black hover:bg-black hover:text-white" %>
+
+      </div>
   <% end %>
   
-  <%= link_to "Back to users", users_path, class: "ml-2 rounded-lg py-3 px-5 border text-black inline-block font-medium" %>
 </div>
