@@ -1,14 +1,24 @@
-<div class="w-full">
-  <% if notice.present? %>
-    <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-  <% end %>
-
+<div class="w-full p-10">
   <% content_for :title, "Products" %>
 
   <div class="flex justify-between">
     <h1 class="font-bold text-3xl text-darkPurple">Products</h1>
     <%= link_to "New product", new_product_path, class: "bg-lilac text-darkPurple p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
   </div>
+
+  <p class="text-darkLilac mb-6">Here you can see information about the products of the system.</p>
+
+  <% if flash[:notice] %>
+  <div class="w-full max-w-md mx-auto bg-green-500 text-white text-center py-2 px-4 rounded-xl mb-4">
+    <%= flash[:notice] %>
+  </div>
+  <% flash.discard(:notice) %>
+<% end %>
+<% if flash[:alert] %>
+<div class="w-full bg-red-500 max-w-md mx-auto text-white text-center py-2 px-4 rounded-xl mb-4">
+  <%= flash[:alert] %>
+</div>
+<% end %>
 
   <div id="users" class="min-w-full">
     <% if @products.any? %>
