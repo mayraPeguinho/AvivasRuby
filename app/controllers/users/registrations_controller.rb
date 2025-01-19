@@ -57,9 +57,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # Configura los parámetros adicionales permitidos al registrarse
   def configure_sign_up_params
-  puts "Configurando parámetros de sign_up"
   devise_parameter_sanitizer.permit(:sign_up, keys: [:alias, :role_id, :entry_date, :tel])
-  puts "Parámetros permitidos: #{devise_parameter_sanitizer.sanitize(:sign_up).inspect}"
 end
 
   # Configura los parámetros adicionales permitidos al actualizar
