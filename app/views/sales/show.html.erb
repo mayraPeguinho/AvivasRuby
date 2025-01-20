@@ -1,9 +1,16 @@
 <div class="md:w-2/3 w-full flex justify-center">
   <div class="flex flex-col">
-    <% if notice.present? %>
-      <p class="py-2 px-3 bg-green-50 mb-5 text-green-500 font-medium rounded-lg inline-block" id="notice"><%= notice %></p>
-    <% end %>
-
+  <% if flash[:notice] %>
+  <div class="w-full max-w-md mx-auto bg-green-500 text-white text-center py-2 px-4 rounded-xl mb-4">
+    <%= flash[:notice] %>
+  </div>
+  <% flash.discard(:notice) %>
+  <% end %>
+  <% if flash[:alert] %>
+  <div class="w-full bg-red-500 max-w-md mx-auto text-white text-center py-2 px-4 rounded-xl mb-4">
+  <%= flash[:alert] %>
+  </div>
+  <% end %>
     <%= render @sale %>
 
   <%= link_to "Back to sales", sales_path, class: "w-2/3 justify-center mt-5 items-center text-center p-2 rounded-xl bg-gray-100 font-medium border border-black hover:bg-black hover:text-white" %>

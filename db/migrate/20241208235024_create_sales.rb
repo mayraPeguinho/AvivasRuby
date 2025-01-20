@@ -9,5 +9,6 @@ class CreateSales < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+    add_check_constraint :sales, "total_sale >= 0", name: "check_total_sale_positive"
   end
 end

@@ -88,7 +88,7 @@
           <label for="sale_product_solds_${productIndex}_product_id" class="text-sm font-medium text-gray-700">Product</label>
           <select name="sale[product_solds_attributes][${productIndex}][product_id]" id="sale_product_solds_${productIndex}_product_id" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             <option value="">Select Product</option>
-            <% Product.all.each do |product| %>
+            <% Product.where(deleted_at: nil).each do |product| %>
               <option value="<%= product.id %>"><%= product.name %></option>
             <% end %>
           </select>

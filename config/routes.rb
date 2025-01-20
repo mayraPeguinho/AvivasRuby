@@ -24,4 +24,11 @@ Rails.application.routes.draw do
       patch :deactivate
     end
   end
+
+  match "*unmatched", to: "application#not_found", via: :all, constraints: lambda { |req|
+  !req.path.match(/\.(jpg|jpeg|png|gif|svg|ico|css|js|woff2|ttf|eot|otf|json)$/) && 
+  !req.path.start_with?('/assets', '/packs', '/images', '/favicon.ico', '/robots.txt')
+}
+
+
 end

@@ -5,7 +5,9 @@ class SalesController < ApplicationController
 
   # GET /sales or /sales.json
   def index
-    @sales = Sale.page(params[:page]).per(10)
+    @sales = Sale.order(Arel.sql("CASE WHEN deleted_at IS NULL THEN 0 ELSE 1 END"), :created_at)
+    .page(params[:page])
+    .per(10)
   end
 
   # GET /sales/1 or /sales/1.json

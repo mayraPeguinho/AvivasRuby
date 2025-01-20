@@ -29,7 +29,6 @@ class Sale < ApplicationRecord
     product_ids = product_solds.map(&:product_id)
     duplicate_product_ids = product_ids.select { |id| product_ids.count(id) > 1 }.uniq
 
-    # Obtener los nombres de los productos duplicados
     duplicate_product_names = Product.where(id: duplicate_product_ids).pluck(:name)
 
     if duplicate_product_names.any?

@@ -5,7 +5,9 @@ class UsersController < ApplicationController
 
   def index
     @users = User.order(active: :desc)
-  end
+    .page(params[:page])
+    .per(10)
+end
   
 
   def edit

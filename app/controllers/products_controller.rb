@@ -6,7 +6,9 @@ class ProductsController < ApplicationController
   # GET /products or /products.json
   def index
     @products = Product.order(:deleted_at, :name)
-  end
+    .page(params[:page])
+    .per(10)
+end
 
   # GET /products/1 or /products/1.json
   def show

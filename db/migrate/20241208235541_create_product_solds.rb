@@ -8,5 +8,7 @@ class CreateProductSolds < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
+    add_check_constraint :sales, "amount >= 0", name: "check_amount_positive"
+    add_check_constraint :sales, "sale_price >= 0", name: "check_sale_price_positive"
   end
 end
