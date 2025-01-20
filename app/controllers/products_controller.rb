@@ -114,7 +114,7 @@ class ProductsController < ApplicationController
 
   def check_if_deleted
     if @product && @product.deleted_at.present?
-      redirect_to @product, alert: "Este producto ha sido eliminado y no puede ser modificado."
+      redirect_to @product, alert: "This product has been removed and cannot be modified."
     end
   end
 
