@@ -50,7 +50,6 @@ class SalesController < ApplicationController
         end
       end
     else
-      @sale.errors.add(:base, "Not enough stock available for one or more products.")
       respond_to do |format|
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @sale.errors, status: :unprocessable_entity }
@@ -102,9 +101,20 @@ class SalesController < ApplicationController
     end
 
     def valid_stock?
-      @sale.product_solds.all? do |product_sold|
-        product_sold.product.available_stock >= product_sold.amount
+      insufficient_stock = []
+    
+      @sale.product_solds.each do |product_sold|
+        if product_sold.product.available_stock < product_sold.amount
+          insufficient_stock << "#{product_sold.product.name} (Available stock: #{product_sold.product.available_stock}, requested: #{product_sold.amount})"
+        end
       end
+    
+      if insufficient_stock.any?
+        @sale.errors.add(:base, "Insufficient stock for the following products: #{insufficient_stock.join(', ')}")
+        return false
+      end
+    
+      true
     end
 
     def sale_params

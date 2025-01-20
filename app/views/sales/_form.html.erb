@@ -1,65 +1,66 @@
 <%= form_with(model: @sale, local: true, class: "contents") do |form| %>
-  <% if @sale.errors.any? %>
-    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
-      <h2><%= pluralize(@sale.errors.count, "error") %> prohibited this sale from being saved:</h2>
-      <ul>
-        <% @sale.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
 
-  <div class="my-5">
-    <%= form.label :user_id %>
-    <%= form.collection_select :user_id, User.all, :id, :alias, { prompt: "Select User" }, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+   <% if @sale.errors.any? %>
+  <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-lg mt-3">
+    <h2><%= pluralize(@sale.errors.count, "error") %> prohibited this sale from being saved:</h2>
+
+    <ul class="list-disc pl-5 mt-2">
+      <% @sale.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+    <div class="w-full">
+    <%= form.label :user_id , class: "text-sm font-medium text-gray-700" %>
+    <%= form.collection_select :user_id, User.all, :id, :alias, { prompt: "Select User" }, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", required: true %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :client %>
-    <%= form.text_field :client, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="w-full">
+  <%= form.label :client , class: "text-sm font-medium text-gray-700" %>
+    <%= form.text_field :client, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", required: true %>
   </div>
 
-  <div class="my-5">
-    <%= form.label :realization_datetime %>
-    <%= form.datetime_field :realization_datetime, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+  <div class="w-full">
+  <%= form.label :realization_datetime , class: "text-sm font-medium text-gray-700" %>
+    <%= form.datetime_field :realization_datetime, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500", required: true %>
   </div>
 
-  <!-- Nested form for product_solds -->
   <h3 class="font-bold mb-2">Add Products</h3>
   <div id="products-section" data-index="<%= @sale.product_solds.length %>">
     <%= form.fields_for :product_solds do |product_form| %>
       <div class="product-item border-b pb-4 mb-4">
-        <div class="my-3">
-          <%= product_form.label :product_id, "Product" %>
-  <%= product_form.collection_select :product_id, Product.where(deleted_at: nil), :id, :name, { prompt: "Select Product" }, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>        </div>
-
-        <div class="my-3">
-          <%= product_form.label :amount, "Quantity" %>
-          <%= product_form.number_field :amount, min: 1, class: "block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full" %>
+      <div class="w-full">
+      <%= product_form.label :product_id, "Product", class: "text-sm font-medium text-gray-700" %>
+  <%= product_form.collection_select :product_id, Product.where(deleted_at: nil), :id, :name, { prompt: "Select Product" }, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
         </div>
 
-        <div class="my-3">
-          <%= product_form.check_box :_destroy %> 
+  <div class="w-full">
+  <%= product_form.label :amount, "Quantity" , class: "text-sm font-medium text-gray-700" %>
+          <%= product_form.number_field :amount, min: 1, class: "w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" %>
+        </div>
+
+        <div class="w-full">
+        <%= product_form.check_box :_destroy %> 
           <%= product_form.label :_destroy, "Remove Product" %>
         </div>
       </div>
     <% end %>
   </div>
 
-  <div class="my-5">
-    <button type="button" id="add-product-btn" class="rounded-lg py-2 px-4 bg-green-600 text-white font-medium">
+  <div class="w-full">
+  <button type="button" id="add-product-btn" class="rounded-lg py-2 px-4 bg-green-600 text-white font-medium">
       Add Another Product
     </button>
   </div>
 
   <div class="inline mt-5">
-    <%= form.submit class: "rounded-lg py-3 px-5 bg-blue-600 text-white inline-block font-medium cursor-pointer" %>
+      <%= form.submit class: "w-full bg-lilac text-darkPurple mt-2 p-2 border border-lilac rounded-xl hover:text-white hover:bg-darkLilac hover:cursor-pointer font-medium" %>
   </div>
 <% end %>
 
 <script>
-  // Ejecutar el código tanto al cargar la página por primera vez como después de renderizar dinámicamente con Turbo
   document.addEventListener('turbo:load', () => {
     initializeProductForm();
   });
@@ -73,22 +74,19 @@
     const productsSection = document.getElementById('products-section');
     let productIndex = parseInt(productsSection.getAttribute('data-index')) || 0;
 
-    // Evitar que el botón de agregar producto agregue más de uno después de renderizar
     if (!addProductBtn) return;
 
     addProductBtn.addEventListener('click', () => {
-      // Verificar que no se agregue un formulario repetido
       const existingForms = productsSection.querySelectorAll('.product-item');
       if (existingForms.length > productIndex) return; // Si ya existe el formulario, no agregamos otro
 
-      // Crear el nuevo formulario dinámico para producto
       const newProductForm = document.createElement('div');
       newProductForm.classList.add('product-item', 'border-b', 'pb-4', 'mb-4');
 
       newProductForm.innerHTML = `
-        <div class="my-3">
-          <label for="sale_product_solds_${productIndex}_product_id" class="block">Product</label>
-          <select name="sale[product_solds_attributes][${productIndex}][product_id]" id="sale_product_solds_${productIndex}_product_id" class="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full">
+  <div class="w-full">
+          <label for="sale_product_solds_${productIndex}_product_id" class="text-sm font-medium text-gray-700">Product</label>
+          <select name="sale[product_solds_attributes][${productIndex}][product_id]" id="sale_product_solds_${productIndex}_product_id" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
             <option value="">Select Product</option>
             <% Product.all.each do |product| %>
               <option value="<%= product.id %>"><%= product.name %></option>
@@ -96,9 +94,9 @@
           </select>
         </div>
 
-        <div class="my-3">
-          <label for="sale_product_solds_${productIndex}_amount" class="block">Quantity</label>
-          <input type="number" name="sale[product_solds_attributes][${productIndex}][amount]" id="sale_product_solds_${productIndex}_amount" min="1" class="block shadow rounded-md border border-gray-400 outline-none px-3 py-2 mt-2 w-full">
+  <div class="w-full">
+          <label for="sale_product_solds_${productIndex}_amount" class="text-sm font-medium text-gray-700">Quantity</label>
+          <input type="number" name="sale[product_solds_attributes][${productIndex}][amount]" id="sale_product_solds_${productIndex}_amount" min="1" class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
         </div>
 
         <div class="my-3">
@@ -107,12 +105,10 @@
         </div>
       `;
 
-      // Añadir el nuevo formulario
       productsSection.appendChild(newProductForm);
       
-      // Actualizar el índice
       productIndex++;
-      productsSection.setAttribute('data-index', productIndex);  // Guardar el nuevo índice
+      productsSection.setAttribute('data-index', productIndex);  
     });
   }
 </script>

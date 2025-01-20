@@ -29,7 +29,7 @@
         <th class="px-4 py-2 border">Email</th>
         <th class="px-4 py-2 border">Role</th>
         <th class="px-4 py-2 border">Active</th>
-        <th class="px-4 py-2 border">Last Modified</th> <!-- Nueva columna -->
+        <th class="px-4 py-2 border">Last Modified</th> 
         <th class="px-4 py-2 border">Actions</th>
       </tr>
     </thead>
@@ -40,7 +40,7 @@
           <td class="px-4 py-2"><%= user.email %></td>
           <td class="px-4 py-2"><%= user.role.name %></td>
           <td class="px-4 py-2"><%= user.active ? 'Yes' : 'No' %></td>
-          <td class="px-4 py-2"><%= user.updated_at.strftime('%B %d, %Y %I:%M %p') %></td> <!-- Fecha de última modificación -->
+          <td class="px-4 py-2"><%= user.updated_at.strftime('%B %d, %Y %I:%M %p') %></td> 
           <td class="px-4 py-2 text-center flex gap-3">
             <% if user.active %>
               <%= link_to 'View/Edit', edit_user_path(user.id), class: "text-yellow-500 hover:text-yellow-700" %> 
@@ -97,7 +97,6 @@ function openModal(userId) {
   form.action = `/users/${userId}/activate`;
   document.getElementById('user_id').value = userId;
   document.getElementById('activationModal').classList.remove('hidden');
-  // Hide error message when opening modal
   document.getElementById('passwordError').classList.add('hidden');
 }
 
@@ -107,16 +106,13 @@ function closeModal(event) {
   }
 }
 
-// Function to validate password match before submitting the form
 document.getElementById("activateUserForm").addEventListener("submit", function(event) {
   const password = document.getElementById("password").value;
   const passwordConfirmation = document.getElementById("password_confirmation").value;
 
   if (password !== passwordConfirmation) {
-    // Prevent form submission
     event.preventDefault();
     
-    // Show error message
     document.getElementById('passwordError').classList.remove('hidden');
   }
 });
