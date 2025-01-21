@@ -24,6 +24,11 @@ end
       return
     end
 
+    if current_user.role_id == 2 && user_params[:role_id].to_i == 1
+      redirect_to users_path, alert: "You are not allowed to assign admin role."
+      return
+    end    
+
     respond_to do |format|
       if @user.update(user_params)
         format.html { redirect_to @user, notice: "User was successfully updated." }
