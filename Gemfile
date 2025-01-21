@@ -46,9 +46,9 @@ gem "cancancan"
 
 gem "ransack"
 
-gem 'active_storage_validations'
+gem "active_storage_validations"
 
-gem 'kaminari'
+gem "kaminari"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

@@ -3,8 +3,8 @@ class ProductSold < ApplicationRecord
   belongs_to :product
 
   validates :amount, presence: true, numericality: {  only_integer: true, greater_than_or_equal_to: 0 }
-  validates :sale_price, presence: true, numericality: {greater_than_or_equal_to: 0 }
-  
+  validates :sale_price, presence: true, numericality: { greater_than_or_equal_to: 0 }
+
   validate :stock_sufficient?
 
   before_save :set_sale_price
@@ -24,4 +24,3 @@ class ProductSold < ApplicationRecord
     end
   end
 end
-

@@ -14,7 +14,7 @@ class SalesController < ApplicationController
   def show
     # Permitir mostrar incluso si la venta está eliminada
   end
-  
+
   # GET /sales/1/edit
   def edit
     # Restricción implementada en ensure_active_sale
@@ -25,7 +25,7 @@ class SalesController < ApplicationController
     product_sold = @sale.product_solds.build
     product_sold.sale_price = product_sold.product.unit_price if product_sold.product
   end
-  
+
   def create
     @sale = Sale.new(sale_params)
 
@@ -58,7 +58,7 @@ class SalesController < ApplicationController
       end
     end
   end
-  
+
   # PATCH/PUT /sales/1 or /sales/1.json
   def update
     # Restricción implementada en ensure_active_sale
@@ -69,14 +69,14 @@ class SalesController < ApplicationController
     respond_to do |format|
       ActiveRecord::Base.transaction do
         @sale.update!(deleted_at: Time.current)
-        
+
         @sale.product_solds.each do |product_sold|
           product = product_sold.product
-          if product.deleted_at.nil? 
+          if product.deleted_at.nil?
             product.update!(available_stock: product.available_stock + product_sold.amount)
           end
         end
-        
+
         format.html { redirect_to sales_path, status: :see_other, notice: "Sale was successfully marked as deleted." }
         format.json { head :no_content }
       end
@@ -104,27 +104,27 @@ class SalesController < ApplicationController
 
     def valid_stock?
       insufficient_stock = []
-    
+
       @sale.product_solds.each do |product_sold|
         if product_sold.product.available_stock < product_sold.amount
           insufficient_stock << "#{product_sold.product.name} (Available stock: #{product_sold.product.available_stock}, requested: #{product_sold.amount})"
         end
       end
-    
+
       if insufficient_stock.any?
         @sale.errors.add(:base, "Insufficient stock for the following products: #{insufficient_stock.join(', ')}")
         return false
       end
-    
+
       true
     end
 
     def sale_params
       params.require(:sale).permit(
-        :user_id, 
-        :client, 
-        :realization_datetime, 
-        product_solds_attributes: [:product_id, :amount, :_destroy]
+        :user_id,
+        :client,
+        :realization_datetime,
+        product_solds_attributes: [ :product_id, :amount, :_destroy ]
       )
     end
 end

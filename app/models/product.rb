@@ -14,7 +14,7 @@ class Product < ApplicationRecord
   validate :must_have_at_least_one_image
 
   def self.ransackable_attributes(auth_object = nil)
-    ["name", "description", "category_id"]
+    [ "name", "description", "category_id" ]
   end
 
   private
@@ -24,6 +24,4 @@ class Product < ApplicationRecord
       errors.add(:images, "must have at least one image")
     end
   end
-
 end
-

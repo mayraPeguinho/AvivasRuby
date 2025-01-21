@@ -7,6 +7,5 @@ class CreateColors < ActiveRecord::Migration[8.0]
     end
 
     add_index :colors, :name, unique: true
-
   end
 end

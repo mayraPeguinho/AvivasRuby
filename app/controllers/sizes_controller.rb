@@ -78,5 +78,4 @@ class SizesController < ApplicationController
       end
     end
   end
-  
 end

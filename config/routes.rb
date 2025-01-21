@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   resources :sizes
   resources :categories
   resources :colors
-  resources :product_variants, only: [:index] 
+  resources :product_variants, only: [ :index ]
   devise_for :users, controllers: {
     registrations: "users/registrations",
     sessions: "users/sessions"
@@ -26,9 +26,7 @@ Rails.application.routes.draw do
   end
 
   match "*unmatched", to: "application#not_found", via: :all, constraints: lambda { |req|
-  !req.path.match(/\.(jpg|jpeg|png|gif|svg|ico|css|js|woff2|ttf|eot|otf|json)$/) && 
-  !req.path.start_with?('/assets', '/packs', '/images', '/favicon.ico', '/robots.txt')
+  !req.path.match(/\.(jpg|jpeg|png|gif|svg|ico|css|js|woff2|ttf|eot|otf|json)$/) &&
+  !req.path.start_with?("/assets", "/packs", "/images", "/favicon.ico", "/robots.txt")
 }
-
-
 end

@@ -7,6 +7,5 @@ class CreateSizes < ActiveRecord::Migration[8.0]
     end
 
     add_index :sizes, :name, unique: true
-
   end
 end

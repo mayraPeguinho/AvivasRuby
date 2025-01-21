@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     .page(params[:page])
     .per(10)
 end
-  
+
 
   def edit
     # Verifica si el usuario está activo antes de permitir la edición
@@ -27,7 +27,7 @@ end
     if current_user.role_id == 2 && user_params[:role_id].to_i == 1
       redirect_to users_path, alert: "You are not allowed to assign admin role."
       return
-    end    
+    end
 
     respond_to do |format|
       if @user.update(user_params)

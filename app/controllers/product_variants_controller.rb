@@ -6,5 +6,4 @@ class ProductVariantsController < ApplicationController
       @colors = Color.all
       @categories = Category.all
     end
-  end
-  
+end
